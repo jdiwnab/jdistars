@@ -1,0 +1,610 @@
+<html>
+<head>
+  <script type="application/javascript" src="stardbbig.json"></script>
+  <script type="application/javascript" src="constellations.json"></script>
+  <script type="application/javascript" src="planet.js"></script>
+  <script type="application/javascript" src="star.js"></script>
+  <script type="application/javascript" src="sun.js"></script>
+  <script type="application/javascript" src="moon.js"></script>
+  <script type="application/javascript" src="coordconvert.js"></script>
+
+  <script type="application/javascript">
+	var stars = new Array();
+	var planets = new Array();
+	var sun;
+	var moon;
+	var currDate = new Date();
+	/*currDate.setUTCFullYear(2010);
+	currDate.setUTCMonth(7);
+	currDate.setUTCDate(16);
+	currDate.setHours(13);
+	currDate.setUTCMinutes(0);
+	currDate.setUTCSeconds(0);*/
+	var longitude = -77.4907;
+	var latitude = 37.6239;
+  
+	//Virtural canvas sizes for redrawing
+	var virtualSize = {"X": 500, "Y": 500};
+	var virtualOffset = {"X":0, "Y":0};
+	var viewSize = {"width":500, "height":500};
+
+	var actualSize = {"width":500, "height":500};
+  
+	var animating = false;
+	var animationhandler;
+	function loadStarDB(db) {
+		for(i = 0; i<db.length; i++){
+			if(db[i].ProperName=="") {
+				stars[i] = new Star(db[i].RA, db[i].Dec, db[i].Mag, db[i].BayerFlamsteed);
+			} else {
+				stars[i] = new Star(db[i].RA, db[i].Dec, db[i].Mag, db[i].ProperName);
+			}
+		}
+		//Match up the constellations
+		for (var i=0;i<constellations.length; i++) {
+			for (var j=0; j<constellations[i].stars.length; j++) {
+				//find the two stars
+				var star1 = null;
+				var star2 = null;
+				for(var k=0; k<stars.length; k++) {
+					if(stars[k].name == constellations[i].stars[j].a) {
+						star1 = stars[k];
+					}
+					if(stars[k].name == constellations[i].stars[j].b) {
+						star2 = stars[k];
+					}
+					if(star1 != null && star2 != null) {
+						break;
+					}
+				}
+				//If we coudlnt' find one of them, skip it
+				if(star1 == null || star2 == null) { continue; }
+				constellations[i].stars[j].star1 = star1;
+				constellations[i].stars[j].star2 = star2;
+			}
+		}
+		//Also load the planets, in order of visibility
+		sun = new Sun();
+		moon = new Moon();
+		planets[0] = new Planet("Venus",   '#c73', 0.7233316, 0.0067826, 3.394435,  76.4997524,  0.00247, 2444238.5, 131.2895792, 0.003847, 224.44394, 1.602130)
+		planets[1] = new Planet("Mars",    '#d22', 1.5236883, 0.0933865, 1.8498011, 49.4032001,  0.00211, 2444238.5, 335.690816,  0.005038, 150.61701, 0.524033)
+		planets[2] = new Planet("Mercury", '#c33', 0.3870986, 0.20563,   7.0043579, 48.094173,   0.00325, 2444238.5, 77.14442128, 0.004265, 154.15309, 4.092339)
+		planets[3] = new Planet("Jupiter", '#f94', 5.202561,  0.0484658, 1.3041819, 100.2520175, 0.00276, 2444238.5, 14.0095493,  0.004412, 132.95682, 0.0830912)
+		planets[4] = new Planet("Saturn",  '#bb3', 9.554747,  0.055615,  2.4893741, 113.4888341, 0.00239, 2444238.5, 92.665397,   0.005371, 72.65684,  0.0334596)
+		planets[5] = new Planet("Uranus",  '#4a9', 19.21814,  0.0463232, 0.7729895, 73.8768642,  0.00137, 2444238.5, 172.7363288, 0.004063, 55.33453,  0.0117308)
+		planets[6] = new Planet("Neptune", '#22f', 30.10957,  0.0090021, 1.7716016, 131.5660649, 0.00301, 2444238.5, 47.8672148,  0.003899, 212.49069, 0.0059819);
+		planets[7] = new Planet("Pluto",   '#ccc', 39.78459,  0.25387,   17.137,    109.941,     0.00305, 2444240.5, 222.972,     0.00083,  346.467,   0.0039746);
+	}      
+	function calcSideRealTime(iDate,longitude) {
+		var epochDate = new Date();
+		epochDate.setUTCFullYear(2000);
+		epochDate.setUTCMonth(0);
+		epochDate.setUTCDate(1);
+		epochDate.setUTCHours(12);
+		epochDate.setUTCMinutes(0);
+		epochDate.setUTCSeconds(0);
+	
+		var daydiff = iDate.valueOf() -epochDate.valueOf();
+		daydiff = daydiff / 1000 / 60 / 60 / 24;
+		daydiff = Math.floor(daydiff);
+		daydiff = daydiff + .5;
+		  
+		var UTCTime = iDate.getUTCHours() + iDate.getUTCMinutes()/60 + iDate.getUTCSeconds()/3600;
+	  
+		LST = (100.46 + 0.985647 * daydiff + longitude + 15*(UTCTime)) % 360;
+	
+		return LST;
+	}
+	function deg2Rad(deg) {
+		return deg * (Math.PI/180);
+	}
+	function rad2Deg(rad) {
+		return rad * (180/Math.PI);
+	}	
+	function calcRealLocation(x,y) {
+		//Converts from center based coordinates to absolute coordinates in a view window
+		//X and Y are in relation to the center, so offset to the origin
+		var tmpX, tmpY;
+		tmpX = virtualSize.X/2 + x;
+		tmpY = virtualSize.Y/2 - y;
+		//Now, offset to view window
+		tmpX = tmpX - virtualOffset.X;
+		tmpY = tmpY - virtualOffset.Y;
+		//and scale to the actual canvas size
+		tmpX = tmpX * (actualSize.width / viewSize.width);
+		tmpY = tmpY * (actualSize.height / viewSize.height);
+		return {"X": tmpX, "Y": tmpY};
+	}
+	function calcVirtLocation(x,y) {
+		var tmpX, tmpY;
+		tmpX = (viewSize.width /(actualSize.width)) * x;
+		tmpY = (viewSize.height /(actualSize.height)) * y;
+		tmpX = tmpX + virtualOffset.X;
+		tmpY = tmpY + virtualOffset.Y;
+		tmpX = tmpX - virtualSize.X/2;
+		tmpY = -(tmpY - virtualSize.Y/2);
+		return {"X": tmpX, "Y": tmpY};
+	}
+	function init() {
+		drawBackground();
+		loadStarDB(stardb);
+		recalc();
+		draw();
+	}
+	function drawBackground() {
+		var background = document.createElement('div');
+		background.className="background";
+		background.id = "background";
+		//var centerOffset = calcRealLocation(0,0);
+    
+		//if (document.getElementById('nightvision').checked == true) { 
+		//	background.className+=" nightvision";
+		//}
+		document.getElementById('starmap').appendChild(background);
+    
+		//Draw circular grid on the background, with compass directions.
+		var lineClass = "line"
+		var circleClass = "concentric"
+		//if (document.getElementById('nightvision').checked == true) { 
+		//	lineClass += " nightvision";
+		//	circleClass += " nightvision";
+		//}
+		for(i = (virtualSize.Y-10)/4; i< virtualSize.Y-10; i += (virtualSize.Y-10)/4) {
+			var circle = document.createElement('div');
+			circle.className=circleClass;
+			circle.style.width =  (virtualSize.Y-i)*actualSize.width/viewSize.width;
+			circle.style.height = (virtualSize.Y-i)*actualSize.width/viewSize.width;
+			circle.style.top = (actualSize.width - (virtualSize.Y-i)*actualSize.width/viewSize.width)/2-2;
+			circle.style.left = (actualSize.width - (virtualSize.Y-i)*actualSize.width/viewSize.width)/2-2;
+			circle.style.borderRadius = (virtualSize.Y-i)*actualSize.width/viewSize.width/2
+			background.appendChild(circle);
+			//bgctx.arc(centerOffset.X,centerOffset.Y,(virtualSize.Y-i) * bgcanvas.width/viewSize.width/2, 10,0,Math.PI*2, false);			
+		}
+		//if (document.getElementById('nightvision').checked == true) {
+		//	var circle = document.createElement('div');
+		//	circle.className=circleClass;
+		//	circle.style.width =  viwSize.width/(virtualSize.Y-11);
+		//	circle.style.height = viwSize.width/(virtualSize.Y-11);;
+		//	circle.style.top = (actualSize.width - viwSize.width/(virtualSize.Y-11))/2-2;
+		//	circle.style.left = (actualSize.width - viwSize.width/(virtualSize.Y-11))/2-2;
+		//	circle.style.borderRadius = viwSize.width/(virtualSize.Y-11)/2;
+		//	background.appendChild(circle);
+
+		//	bgctx.beginPath();
+		//	bgctx.arc(centerOffset.X,centerOffset.Y,viewSize.width/(virtualSize.Y-11), 10,0,Math.PI*2, false);
+		//	bgctx.stroke();
+		//}
+		for(i=0; i<Math.PI*2; i = i + Math.PI/6) {
+			var line = document.createElement('div');
+			line.className=lineClass;
+			line.style.MozTransform='rotate('+i+'rad)';
+			background.appendChild(line);
+		}
+	
+		compassClass ="compass";
+		//if (document.getElementById('nightvision').checked == true) { compassClass += ' nightvision'; }
+		var north = document.createElement('div');
+		north.className=compassClass;
+		north.appendChild(document.createTextNode('N'));
+		north.style.top = 20;
+		north.style.left = actualSize.width/2-9;
+		background.appendChild(north);
+		var south = document.createElement('div');
+		south.className=compassClass;
+		south.appendChild(document.createTextNode('S'));
+		south.style.top = actualSize.height-35;
+		south.style.left = actualSize.width/2-9;
+		background.appendChild(south);
+		var east = document.createElement('div');
+		east.className=compassClass;
+		east.appendChild(document.createTextNode('E'));
+		east.style.top = actualSize.height/2-10;
+		east.style.left = actualSize.width-30;
+		background.appendChild(east);
+		var west = document.createElement('div');
+		west.className=compassClass;
+		west.appendChild(document.createTextNode('W'));
+		west.style.top = actualSize.height/2-10;
+		west.style.left = 10;
+		background.appendChild(west);
+		//bgctx.restore();
+	}
+	function incrementDate() {
+		currDate.setUTCMinutes(currDate.getUTCMinutes() + 24*60);
+		document.getElementById('date').textContent = currDate;
+	}  
+	function recalc() {
+		var longitude = -77.9407;
+		var latitude = 37.6239;
+		var lst = calcSideRealTime(currDate, longitude);
+		for (i = 0; i<stars.length; i++) {
+			stars[i].calcXY(latitude,longitude,lst, virtualSize.X/2);
+		}
+    
+		sun.calcXY(latitude,longitude,currDate,lst,virtualSize.X/2);
+		moon.calcXY(latitude,longitude,currDate,lst,virtualSize.X/2);
+		for(i=0; i<planets.length; i++) {
+			planets[i].calcXY(latitude,longitude,currDate,lst,virtualSize.X/2);
+		}
+	
+		for (i=0; i<constellations.length; i++) {
+			var temp = calcXY(constellations[i].ra, constellations[i].dec, latitude, longitude, lst, virtualSize.X/2);
+			constellations[i].x = temp.x;
+			constellations[i].y = temp.y;
+		}
+	}
+	function draw() {
+
+		background = document.getElementById('background');
+		var offset = calcRealLocation(0,0);
+		var fullRadius = (virtualSize.Y-10) * (actualSize.width/actualSize.width)/2
+	
+		for (var i=0;i<constellations.length; i++) {
+			//drawConstellation(starctx,textctx,constellations[i]);
+		}
+	
+		// draw stars
+		for (var j=0;j<stars.length;j++){
+			//if the star can br drawn, do so
+				//drawStar(starctx, textctx, stars[j].x,stars[j].y, stars[j].size, stars[j].name);
+				drawStar(background,stars[j].x,stars[j].y, stars[j].size, stars[j].name);
+		}
+
+
+		//draw planets in reverse order so that the most likely visable ones are on top
+		for(i=planets.length-1;i>=0; i--) {
+ 			//drawPlanet(planetctx,planettextctx,planets[i].x, planets[i].y, 5, planets[i].color, planets[i].name);
+ 			//drawPlanet(background,planets[i].x, planets[i].y, 5, planets[i].color, planets[i].name);
+ 		}
+	
+		//Draw sun and moon last, as they are the biggest
+		//drawPlanet(planetctx,planettextctx,sun.x, sun.y, 10,'#bb0', "Sun");
+		//drawMoon(planetctx,planettextctx,moon.x,moon.y,10, moon.phase, "Moon");
+		//drawPlanet(background,sun.x, sun.y, 10,'#bb0', "Sun");
+		//drawMoon(background,moon.x,moon.y,10, moon.phase, "Moon");
+	}
+	function drawStar(background,x,y,r, name){
+		realloc = calcRealLocation(x,y);
+		//If the object is not in view, skip it
+		if (realloc.X < -10 || realloc.X > actualSize.width + 10 || realloc.Y < -10 || realloc.Y > actualSize.height+10) { return; }
+		if (Math.sqrt(x*x + y*y) > virtualSize.X/2) { return;}
+		var starClass = "star"
+		//if(document.getElementById('nightvision').checked==true) {
+		//	starClass += " nightvision";
+		//}
+		if(r<3) {
+			starClass += " smallstar";
+		}
+
+		var star = document.createElement('div');
+		star.className = starClass;
+		star.style.left = realloc.X - star.style.width/2;
+		star.style.top = realloc.Y - star.style.height/2;
+		star.style.width = r*2;
+		star.style.height = r*2;
+		star.style.borderRadius = r;
+		background.appendChild(star);
+	
+		if(r >= 4) {
+			var startag = document.createElement('div');
+			startag.className = 'startag';
+			//if(document.getElementById('nightvision').checked==true) { startag.className += ' nightvision'; }
+			startag.appendChild(document.createTextNode(name));
+			startag.style.left = realloc.X+10;
+			startag.style.top = realloc.Y-10;
+			background.appendChild(startag);
+		}
+	}
+/*  function drawConstellation(starctx, textctx, constellation) {
+    for (var i=0; i<constellation.stars.length; i++) {
+	  if(constellation.stars[i].star1 == null || constellation.stars[i].star2 == null) { continue; }
+      var star1 = constellation.stars[i].star1;
+	  var star2 = constellation.stars[i].star2;
+	  var distance = Math.sqrt( Math.pow( star1.x - star2.x, 2) + Math.pow(star1.y - star2.y, 2));
+	  if(distance > 200) { continue; }
+      realStar1 = calcRealLocation(star1.x,star1.y);
+	  realStar2 = calcRealLocation(star2.x,star2.y);
+	  realText  = calcRealLocation(constellation.x, constellation.y);
+	  //If the object is not in view, skip it
+	  //if (realloc.X < -10 || realloc.X > starctx.canvas.width + 10 || realloc.Y < -10 || realloc.Y > starctx.canvas.height+10) { return; }
+      //starctx.save();
+      //r=2
+      starctx.strokeStyle = '#c00';
+	  if(document.getElementById('nightvision').checked==true) { starctx.strokeStyle = '#a00'; }
+	  starctx.beginPath();
+	  var xCenter =starctx.canvas.width/2;
+      var yCenter =starctx.canvas.height/2;
+	  starctx.moveTo(realStar1.X, realStar1.Y);
+	  starctx.lineTo(realStar2.X, realStar2.Y);
+	  starctx.stroke();
+	  //starctx.restore();
+	}
+	if (realText.X < -10 || realText.X > textctx.canvas.width + 10 || realText.Y < -10 || realText.Y > textctx.canvas.height+10) { return; }
+	textctx.fillStyle = '#ccc';
+	if(document.getElementById('nightvision').checked==true) { textctx.fillStyle = '#F00'; }
+    textctx.fillText(constellation.name, realText.X, realText.Y);
+
+  }
+  function drawPlanet(planetctx, planettextctx, x,y,r,color,name) {
+    var realloc = calcRealLocation(x,y);
+	//If the object is not in view, skip it
+	if (realloc.X < -10 || realloc.X > planetctx.canvas.width + 10 || realloc.Y < -10 || realloc.Y > planetctx.canvas.height+10) { return; }
+	
+    //planetctx.save();
+    planetctx.fillStyle = color;
+	if(document.getElementById('nightvision').checked==true) { planetctx.fillStyle = '#D00'; }
+	
+	//var xCenter = planetctx.canvas.width/2 + x;
+	//var yCenter = planetctx.canvas.height/2 -y;
+	var xCenter = realloc.X;
+	var yCenter = realloc.Y;
+    //planetctx.translate(x,-y);
+    planetctx.beginPath();
+    //planetctx.moveTo(r,0);
+	planetctx.arc(xCenter,yCenter,r,0,Math.PI*2,true);
+    planetctx.closePath();
+    planetctx.fill();
+    //planetctx.restore();
+    
+    //planettextctx.save();
+	planettextctx.fillStyle = '#ddd';
+	if(document.getElementById('nightvision').checked==true) { planettextctx.fillStyle = '#F00'; }
+	planettextctx.fillText(name,xCenter+5,yCenter-5);
+	//planettextctx.restore();
+    
+  }
+  function drawMoon(planetctx, planettextctx, x,y,r,phase,name) {
+    var realloc = calcRealLocation(x,y);
+	//If the object is not in view, skip it
+	if (realloc.X < -10 || realloc.X > planetctx.canvas.width + 10 || realloc.Y < -10 || realloc.Y > planetctx.canvas.height+10) { return; }
+	
+    //planetctx.save();
+	//var xCenter = planetctx.canvas.width/2 + x;
+	//var yCenter = planetctx.canvas.height/2 -y;
+	var xCenter = realloc.X;
+	var yCenter = realloc.Y;
+	
+	// 1 = 0 = full
+	// .25 = last quarter
+	// .5 = new
+	// .75 = first quarter
+	if(phase > .25 && phase < .75 ) { //mostly black
+      planetctx.fillStyle = '#000';
+	  if(document.getElementById('nightvision').checked==true) { planetctx.fillStyle = '#300'; }
+	} else {
+	  planetctx.fillStyle = '#bbb'; //mostly lit
+	  if(document.getElementById('nightvision').checked==true) { planetctx.fillStyle = '#B00'; }
+	}
+    //planetctx.translate(x,-y);
+    planetctx.beginPath();
+    //planetctx.moveTo(xCenter,yCenter);
+	planetctx.arc(xCenter,yCenter,r,0,Math.PI*2,true);
+    planetctx.closePath();
+    planetctx.fill();
+	
+	//if we are not at a full moon, new moon, or nearly so, draw the crecent (of fixed size)
+	if( !((phase > .95 && phase < 1.05) || ( phase > .45 && phase < .55))) {
+	  planetctx.beginPath();
+	  planetctx.moveTo(xCenter,yCenter);
+	  //now overlay with the oposite color a crecent
+	  if(phase > .25 && phase < .75 ) { //mostly black
+        planetctx.fillStyle = '#bbb';
+		if(document.getElementById('nightvision').checked==true) { planetctx.fillStyle = '#B00'; }
+	  } else {
+	    planetctx.fillStyle = '#000'; //mostly lit
+	    if(document.getElementById('nightvision').checked==true) { planetctx.fillStyle = '#300'; }
+	  }
+	  
+	  //if it is a quarter, or nearly so, just draw a straight line
+	  if( (phase > .73 && phase < .78) ) {
+	    planetctx.arc(xCenter,yCenter,r,-Math.PI/2,Math.PI/2,false);
+      } else if ( phase > .23 && phase < .28) {
+	    planetctx.arc(xCenter,yCenter,r,-Math.PI/2,Math.PI/2,true);
+	  }	else if( (phase > .25 && phase < .5) || (phase >.75 && phase < 1) ) {
+	    //crecent on the right
+		planetctx.arc(xCenter,yCenter,r,-Math.PI/2,Math.PI/2,false);
+		planetctx.moveTo(xCenter,yCenter + r);
+		planetctx.quadraticCurveTo(xCenter + 6,yCenter,xCenter,yCenter-r);
+	  } else {
+	    //crecent on the left
+		planetctx.arc(xCenter,yCenter,r,-Math.PI/2,Math.PI/2,true);
+		planetctx.moveTo(xCenter,yCenter + r); 
+		planetctx.quadraticCurveTo(xCenter-6,yCenter,xCenter,yCenter-r);
+	  }
+	  
+	  planetctx.closePath();
+	  planetctx.fill();
+	}
+	//
+	
+    //planetctx.restore();
+    
+    //planettextctx.save();
+	planettextctx.fillStyle = '#ddd';
+	if(document.getElementById('nightvision').checked==true) { planettextctx.fillStyle = '#D00'; }
+	planettextctx.fillText(name,xCenter+5,yCenter-5);
+	//planettextctx.restore();
+    
+  }*/
+/*  function showStarInfo(e) {
+    var star = getCurrentPosition(e);
+	if (!star) { return; }
+	document.getElementById('starname').textContent=star.name;
+	document.getElementById('starra').textContent=star.ra;
+	document.getElementById('stardec').textContent=star.dec;
+	document.getElementById('staralt').textContent=star.altitude;
+	document.getElementById('staraz').textContent=star.Azimuth;
+	document.getElementById('starmag').textContent=star.mag;
+  }*/
+/*  function getCurrentPosition(e) {
+    var x;
+	var y;
+	
+	//find the absolute coordinates of the click
+	if(e.pageX || e.pageY) {
+	  x = e.pageX;
+	  y = e.pageY;
+	} else {
+	  x = e.clientX + document.body.scrollleft + document.documentElement.scrollLeft;
+	  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+	}
+	
+	x -= document.getElementById('starCanvas').offsetLeft;
+	y -= document.getElementById('starCanvas').offsetTop;
+	
+	//Get real coordinates
+	var loc = calcVirtLocation(x,y);
+	//offset to the centered corrdinates
+	//x -= document.getElementById('starCanvas').width/2;
+	//y -= document.getElementById('starCanvas').height/2;
+	//y = -y;
+	//check sun and moon first
+	
+	
+	for(i=0; i<stars.length; i++)
+	{
+	  if(loc.X>stars[i].x-stars[i].size && loc.X<stars[i].x+stars[i].size &&
+	     loc.Y>stars[i].y-stars[i].size && loc.Y<stars[i].y+stars[i].size) {
+		 return stars[i];
+	  }
+	}	 
+  }
+  function startAnimate() {
+    if(!animating) {
+       animationhandler = setInterval("incrementDate(); recalc(); draw();", 10);
+       animating = true;
+       document.getElementById('animatebutton').textContent="Stop";
+    } else {
+       clearInterval(animationhandler);
+       animating=false
+       document.getElementById('animatebutton').textContent="Start";
+    }
+    
+  }
+  function handleZoom(e) {
+    var zoom = 1-sliderH(e.target);
+	if ( zoom < 0.05 ) { zoom = 0.05; }
+	var oldSize = viewSize.width;
+	var oldOffset = virtualOffset.X;
+	var fullSize = virtualSize.X;
+	viewSize.width = zoom * fullSize;
+	viewSize.height = zoom * fullSize;
+	virtualOffset.X = (fullSize-viewSize.width)/2;
+	virtualOffset.Y = (fullSize-viewSize.width)/2;
+	drawBackground();
+	draw();
+  }
+  function registerEvents() {
+    document.getElementById('planetTextCanvas').addEventListener("click", showStarInfo, false);
+    document.getElementById('animatebutton').addEventListener("click", startAnimate, false);
+	document.getElementById('nightvision').addEventListener("change", function() { drawBackground(); draw(); }, false);
+	document.getElementById('sliderH1').addEventListener("scroll", handleZoom, false);
+  }
+  function sliderInit() {
+    // Call the 'sliderInit' function from the <BODY> onload event handler.
+    // It initializes all <DIV> objects whose width or height is 17.
+    // This is necessary!
+    var MSIE=true; if (window.getComputedStyle) {MSIE=false;}
+    var s=document.getElementsByTagName("div");
+    for (var i=0;i<s.length;++i) {
+      if (s.item(i).style.width=="17px") {s.item(i).scrollTop=0; if (MSIE){s.item(i).style.display="inline";}}
+      if (s.item(i).style.height=="17px" && MSIE) {s.item(i).style.display="inline"; }
+    }
+  }
+  function sliderH(divObj) {
+    // Use the 'sliderH' function with horizontal sliders.
+    // The 'sliderH' function returns a floating-point number between 0 and 1.
+    var divObj;
+    return parseInt(divObj.scrollLeft)/(parseInt(divObj.scrollWidth)-parseInt(divObj.style.width));
+  }
+  function sliderV(divObj) {
+    // Use the 'sliderV' function with vertical sliders.
+    // The 'sliderV' function returns a floating-point number between 0 and 1.var divObj;
+    return parseInt(divObj.scrollTop)/(parseInt(divObj.scrollHeight)-parseInt(divObj.style.height));
+  }
+
+ */
+	window.onload = function() {
+		init();
+	}
+ </script>
+<style type="text/css">
+.background {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  background-color:#143778;
+  border-radius: 250px;
+}
+.concentric {
+  position: absolute;
+  border-color:#111;
+  border-radius:250px;
+  border-style:solid;
+  border-width:2px;
+  height:498px;
+  width:498px;
+  top:-1px;
+  left:-1px;
+}
+.concentric.nightvision {
+  border-color:#400;
+}
+.line {
+  position: absolute;
+  border-color:#111;
+  border-style:solid;
+  border-width:1px;
+  height:498px;
+  width:0px;
+  top:0px;
+  left:249px;
+  -moz-transform:rotate(45deg);
+}
+.line.nightvision {
+  border-color:#400;
+}
+.star {
+  position: absolute;
+  width:4px;
+  height:4px;
+  border-radius:2px;
+  background-color:#FFF;
+}
+.star.smallstar {
+  background-color:#BBB;
+}
+.star.nightvision {
+  background-color:#F00;
+}
+.star.smallstar.nightvision {
+  background-color:#B00;
+}
+.compass {
+	position:absolute;
+	color:#ddd;
+	font: 1.5em sans-serif;
+}
+.compass.nightvision {
+	color:#d00;
+}
+.startag {
+	color:#ccc;
+	position:absolute;
+	font:.75em sans-serif;
+}
+.startag.nightvision {
+	color:#F00;
+}
+
+</style>
+</head>
+<body>
+<div id="starmap"/>
+<!--<div class="background">
+<div class="concentric0"><div class="concentric1"></div><div class="concentric2"></div><div class="concentric3"></div><div class="concentric4"></div>
+<div class="line1"></div><div class="line2"></div><div class="line3"></div><div class="line4"></div>
+<div class="star" style="top:300px; left: 200px;"></div>
+</div>-->
+</body>
+</html>

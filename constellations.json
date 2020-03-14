@@ -1,0 +1,852 @@
+var constellations = [
+  {"name": "Andromada", "code": "And", "ra": "0.6667", "dec": "38", "stars": [
+    {"a": "Alpheratz", "b": "31Del And"},
+    {"a": "31Del And", "b": "Mirach"},
+    {"a": "Mirach", "b": "57Gam1And"}
+  ]},
+  {"name": "Antila", "code": "Ant", "ra": "10", "dec": "-35", "stars": [
+    {"a": "Iot Ant", "b": "Alp Ant"},
+    {"a": "Alp Ant", "b": "Eta Ant"}
+  ]},
+  {"name": "Apus", "code": "Aps", "ra": "16", "dec": "-76", "stars": [
+    {"a": "Gam Aps", "b": "Bet Aps"},
+    {"a": "Bet Aps", "b": "Del1Aps"},
+    {"a": "Del1Aps", "b": "Alp Aps"}
+  ]},
+  {"name": "Aquarius", "code": "Aqr", "ra": "22.333", "dec": "-13", "stars": [
+    {"a": "34Alp Aqr", "b": "52Pi  Aqr"},
+    {"a": "52Pi  Aqr", "b": "55Zet1Aqr"},
+    {"a": "55Zet1Aqr", "b": "62Eta Aqr"},
+    {"a": "55Zet1Aqr", "b": "48Gam Aqr"},
+    {"a": "48Gam Aqr", "b": "34Alp Aqr"},
+    {"a": "34Alp Aqr", "b": "22Bet Aqr"},
+    {"a": "22Bet Aqr", "b": "33Iot Aqr"},
+    {"a": "22Bet Aqr", "b": "6Mu  Aqr"},
+    {"a": "6Mu Aqr", "b": "2Eps Aqr"},
+    {"a": "34Alp Aqr", "b": "43The Aqr"},
+    {"a": "43The Aqr", "b": "73Lam Aqr"},
+    {"a": "73Lam Aqr", "b": "90Phi Aqr"},
+    {"a": "73Lam Aqr", "b": "71Tau2Aqr"},
+    {"a": "71Tau2Aqr", "b": "76Del Aqr"},
+    {"a": "76Del Aqr", "b": "93Psi2Aqr"},
+    {"a": "93Psi2Aqr", "b": "90Phi Aqr"},
+    {"a": "93Psi2Aqr", "b": "88    Aqr"},
+    {"a": "93Psi2Aqr", "b": "98    Aqr"}
+  ]},
+  {"name": "Aquila", "code": "Aql", "ra": "19.5", "dec": "2", "stars": [
+    {"a": "60Bet Aql", "b": "Altair"},
+    {"a": "Altair", "b": "Tarazed"},
+    {"a": "Tarazed", "b": "30Del Aql"},
+    {"a": "30Del Aql", "b": "16Lam Aql"},
+    {"a": "16Lam Aql", "b": "41Iot Aql"},
+    {"a": "41Iot Aql", "b": "65The Aql"},
+    {"a": "65The Aql", "b": "55Eta Aql"},
+    {"a": "55Eta Aql", "b": "30Del Aql"},
+    {"a": "30Del Aql", "b": "17Zet Aql"},
+    {"a": "17Zet Aql", "b": "13Eps Aql"},
+    {"a": "17Zet Aql", "b": "16Lam Aql"},
+    {"a": "16Lam Aql", "b": "12 Aql"}
+  ]},
+  {"name": "Ara", "code": "Ara", "ra": "17.16667", "dec": "-55", "stars": [
+    {"a": "Alp Ara", "b": "The Ara"},
+    {"a": "Alp Ara", "b": "Bet Ara"},
+    {"a": "Bet Ara", "b": "Gam Ara"},
+    {"a": "Gam Ara", "b": "Del Ara"},
+    {"a": "Del Ara", "b": "Eta Ara"},
+    {"a": "Eta Ara", "b": "Zet Ara"},
+    {"a": "Zet Ara", "b": "Eps1Ara"},
+    {"a": "Eps1Ara", "b": "Alp Ara"}
+  ]},
+  {"name": "Aries", "code": "Ari", "ra": "2.5", "dec": "20", "stars": [
+    {"a": "5Gam2Ari", "b": "6Bet Ari"},
+    {"a": "6Bet Ari", "b": "Hamal"},
+    {"a": "Hamal", "b": "41    Ari"}
+  ]},
+  {"name": "Auriga", "code": "Aur", "ra": "6", "dec": "42", "stars": [
+    {"a": "Capella", "b": "34Bet Aur"},
+    {"a": "Capella", "b": "7Eps Aur"},
+    {"a": "Capella", "b": "3Iot Aur"},
+    {"a": "34Bet Aur", "b": "37The Aur"},
+    {"a": "37The Aur", "b": "Alnath"},
+    {"a": "3Iot Aur", "b": "Alnath"},
+    {"a": "Capella", "b": "33Del Aur"},
+    {"a": "34Bet Aur", "b": "33Del Aur"}
+  ]},
+  {"name": "Bootes", "code": "Boo", "ra": "14.58333", "dec": "30", "stars": [
+    {"a": "Arcturus", "b": "Izar"},
+    {"a": "Izar", "b": "49Del Boo"},
+    {"a": "49Del Boo", "b": "42Bet Boo"},
+    {"a": "42Bet Boo", "b": "27Gam Boo"},
+    {"a": "27Gam Boo", "b": "25Rho Boo"},
+    {"a": "25Rho Boo", "b": "Arcturus"},
+    {"a": "30Zet Boo", "b": "Arcturus"},
+    {"a": "8Eta Boo", "b": "Arcturus"}
+  ]},
+  {"name": "Caelum", "code": "Cae", "ra": "4.8333", "dec": "-38", "stars": [
+    {"a": "Del Cae", "b": "Alp Cae"},
+    {"a": "Alp Cae", "b": "Bet Cae"},
+    {"a": "Bet Cae", "b": "Gam1Cae"}
+  ]},
+  {"name": "Camelopardalis", "code": "Cam", "ra": "5.66667", "dec": "70", "stars": [
+    {"a": "10Bet Cam", "b": "9Alp Cam"},
+    {"a": "9Alp Cam", "b": "Gam Cam"},
+  ]},
+  {"name": "Cancer", "code": "Cnc", "ra": "8.5", "dec": "20", "stars": [
+    {"a": "65Alp Cnc", "b": "47Del Cnc"},
+    {"a": "47Del Cnc", "b": "43Gam Cnc"},
+    {"a": "43Gam Cnc", "b": "48Iot Cnc"},
+    {"a": "47Del Cnc", "b": "8    Cnc"}
+  ]},
+  {"name": "Canes Venatici", "code": "CVn", "ra": "13", "dec": "40", "stars": [
+    {"a": "12Alp2CVn", "b": "8Bet CVn"}
+  ]},
+  {"name": "Canis Major", "code": "CMa", "ra": "6.6667", "dec": "-24", "stars": [
+    {"a": "Sirius", "b": "2Bet CMa"},
+    {"a": "2Bet CMa", "b": "7Nu 2CMa"},
+    {"a": "7Nu 2CMa", "b": "16Omi1CMa"},
+    {"a": "16Omi1CMa", "b": "Adhara"},
+    {"a": "Adhara", "b": "25Del CMa"},
+    {"a": "25Del CMa", "b": "Sirius"},
+    {"a": "25Del CMa", "b": "31Eta CMa"}
+   ]},
+  {"name": "Canis Minor", "code": "CMi", "ra": "7.5", "dec": "6", "stars": [
+    {"a": "Procyon", "b": "4Gam CMi"}
+  ]},
+  {"name": "Capricornus", "code": "Cap", "ra": "20.8333", "dec": "-20", "stars": [
+    {"a": "6Alp2Cap", "b": "9Bet Cap"},
+    {"a": "9Bet Cap", "b": "16Psi Cap"},
+    {"a": "16Psi Cap", "b": "18Ome Cap"},
+    {"a": "18Ome Cap", "b": "34Zet Cap"},
+    {"a": "34Zet Cap", "b": "49Del Cap"},
+    {"a": "49Del Cap", "b": "40Gam Cap"},
+    {"a": "40Gam Cap", "b": "23The Cap"},
+    {"a": "23The Cap", "b": "6Alp2Cap"}
+  ]},
+  {"name": "Carina ", "code": "Car", "ra": "8.6667", "dec": "-60", "stars": [
+    {"a": "Canopus", "b": "Bet Car"},
+    {"a": "Bet Car", "b": "Ome Car"},
+    {"a": "Ome Car", "b": "The Car"},
+    {"a": "The Car", "b": "Iot Car"},
+    {"a": "Iot Car", "b": "Eps Car"},
+    {"a": "Eps Car", "b": "Chi Car"},
+    {"a": "Iot Car", "b": "Del Vel"}
+  ]},
+  {"name": "Cassiopeia  ", "code": "Cas", "ra": "1", "dec": "60", "stars": [
+    {"a": "Caph", "b": "Shedir"},
+    {"a": "Shedir", "b": "27Gam Cas"},
+    {"a": "27Gam Cas", "b": "37Del Cas"},
+    {"a": "37Del Cas", "b": "45Eps Cas"}
+  ]}, 
+  {"name": "Centaurus", "code": "Cen", "ra": "13.3333", "dec": "-47", "stars": [
+    {"a": "Rigel Kentaurus B", "b": "Hadar"},
+    {"a": "Hadar", "b": "Eps Cen"},
+    {"a": "Eps Cen", "b": "Zet Cen"},
+    {"a": "Zet Cen", "b": "Gam Cen"},
+	{"a": "Gam Cen", "b": "Eps Cen"},
+    {"a": "Gam Cen", "b": "Del Cen"},
+    {"a": "Gam Cen", "b": "Rho Cen"},
+    {"a": "Del Cen", "b": "Pi  Cen"},
+    {"a": "Rho Cen", "b": "Omi2Cen"},
+    {"a": "Zet Cen", "b": "Ups2Cen"},
+    {"a": "Ups2Cen", "b": "Phi Cen"},
+    {"a": "Phi Cen", "b": "Psi Cen"},
+    {"a": "Psi Cen", "b": "5The Cen"},
+    {"a": "5The Cen", "b": "Nu  Cen"},
+    {"a": "Nu  Cen", "b": "Zet Cen"},
+    {"a": "Phi Cen", "b": "Eta Cen"},
+    {"a": "Eta Cen", "b": "Kap Cen"},
+    {"a": "Nu  Cen", "b": "Iot Cen"}
+  ]},
+  {"name": "Cepheus", "code": "Cep", "ra": "22", "dec": "70", "stars": [
+    {"a": "35Gam Cep", "b": "8Bet Cep"},
+    {"a": "35Gam Cep", "b": "32Iot Cep"},
+    {"a": "32Iot Cep", "b": "8Bet Cep"},
+    {"a": "32Iot Cep", "b": "27Del Cep"},
+    {"a": "27Del Cep", "b": "21Zet Cep"},
+    {"a": "21Zet Cep", "b": "23Eps Cep"},
+    {"a": "23Eps Cep", "b": "Mu  Cep"},
+    {"a": "Mu  Cep", "b": "Alderamin"},
+    {"a": "Alderamin", "b": "3Eta Cep"},
+    {"a": "3Eta Cep", "b": "2The Cep"},
+    {"a": "Alderamin", "b": "8Bet Cep"}
+  ]}, 
+  {"name": "Cetus", "code": "Cet", "ra": "1.75", "dec": "-12", "stars": [
+    {"a": "55Zet Cet", "b": "52Tau Cet"},
+    {"a": "52Tau Cet", "b": "Diphda"},
+    {"a": "Diphda", "b": "8Iot Cet"},
+    {"a": "8Iot Cet", "b": "31Eta Cet"},
+    {"a": "31Eta Cet", "b": "45The Cet"},
+    {"a": "45The Cet", "b": "55Zet Cet"},
+    {"a": "55Zet Cet", "b": "68Omi Cet"},
+    {"a": "68Omi Cet", "b": "82Del Cet"},
+    {"a": "82Del Cet", "b": "86Gam Cet"},
+    {"a": "86Gam Cet", "b": "Menkar"},
+    {"a": "Menkar", "b": "91Lam Cet"},
+    {"a": "91Lam Cet", "b": "87Mu  Cet"},
+    {"a": "87Mu  Cet", "b": "73Xi 2Cet"},
+    {"a": "73Xi 2Cet", "b": "86Gam Cet"}
+  ]},
+  {"name": "Chameleon", "code": "Cha", "ra": "10.66667", "dec": "-78", "stars": [
+    {"a": "Alp Cha", "b": "The Cha"},
+    {"a": "The Cha", "b": "Gam Cha"},
+    {"a": "Gam Cha", "b": "Del2Cha"},
+    {"a": "Del2Cha", "b": "Bet Cha"},
+    {"a": "Bet Cha", "b": "Eps Cha"},
+    {"a": "Eps Cha", "b": "Gam Cha"}
+  ]},
+  {"name": "Circinus", "code": "Cir", "ra": "14.8333", "dec": "-63", "stars": [
+    {"a": "Bet Cir", "b": "The Cir"},
+    {"a": "The Cir", "b": "Alp Cir"},
+    {"a": "Alp Cir", "b": "Del Cir"},
+    {"a": "Del Cir", "b": "Gam Cir"}
+  ]},
+  {"name": "Columba", "code": "Col", "ra": "5.6667", "dec": "-34", "stars": [
+    {"a": "Eps Col", "b": "Alp Col"},
+    {"a": "Alp Col", "b": "Bet Col"},
+    {"a": "Bet Col", "b": "Eta Col"},
+    {"a": "Bet Col", "b": "Del Col"}
+  ]},
+  {"name": "Coma Berenices ", "code": "Com", "ra": "12.6667", "dec": "23", "stars": [
+    {"a": "42Alp Com", "b": "43Bet Com"},
+    {"a": "43Bet Com", "b": "15Gam Com"}
+  ]},
+  {"name": "Corona Australis", "code": "CrA", "ra": "18.5", "dec": "-41", "stars": [
+    {"a": "The CrA", "b": "Del CrA"},
+    {"a": "Del CrA", "b": "Bet CrA"},
+    {"a": "Bet CrA", "b": "Alp CrA"},
+    {"a": "Alp CrA", "b": "Gam CrA"},
+    {"a": "Gam CrA", "b": "Eps CrA"}
+  ]},
+  {"name": "Corona Borealis", "code": "CrB", "ra": "15.75", "dec": "30", "stars": [
+    {"a": "4The CrB", "b": "3Bet CrB"},
+    {"a": "3Bet CrB", "b": "Alphekka"},
+    {"a": "Alphekka", "b": "8Gam CrB"},
+    {"a": "8Gam CrB", "b": "10Del CrB"},
+    {"a": "10Del CrB", "b": "13Eps CrB"},
+    {"a": "13Eps CrB", "b": "14Iot CrB"}
+  ]},
+  {"name": "Corvus", "code": "Crv", "ra": "12.333", "dec": "-18", "stars": [
+    {"a": "9Bet Crv", "b": "7Del Crv"},
+    {"a": "7Del Crv", "b": "4Gam Crv"},
+    {"a": "4Gam Crv", "b": "3    Crv"},
+    {"a": "3    Crv", "b": "9Bet Crv"}
+  ]},
+  {"name": "Crater", "code": "Crt", "ra": "11.333", "dec": "-15", "stars": [
+    {"a": "7Alp Crt", "b": "11Bet Crt"},
+    {"a": "11Bet Crt", "b": "15Gam Crt"},
+    {"a": "15Gam Crt", "b": "12Del Crt"},
+    {"a": "12Del Crt", "b": "7Alp Crt"},
+    {"a": "12Del Crt", "b": "14Eps Crt"},
+    {"a": "14Eps Crt", "b": "21The Crt"},
+    {"a": "15Gam Crt", "b": "27Zet Crt"},
+    {"a": "27Zet Crt", "b": "30Eta Crt"}
+  ]},
+  {"name": "Crux ", "code": "Cru", "ra": "12.333", "dec": "-60", "stars": [
+    {"a": "Acrux", "b": "Gam Cru"},
+    {"a": "Del Cru", "b": "Bet Cru"}
+  ]},
+  {"name": "Cygnus", "code": "Cyg", "ra": "20.5", "dec": "43", "stars": [
+    {"a": "Deneb", "b": "37Gam Cyg"},
+    {"a": "37Gam Cyg", "b": "6Bet1Cyg"},
+    {"a": "37Gam Cyg", "b": "53Eps Cyg"},
+    {"a": "53Eps Cyg", "b": "64Zet Cyg"},
+    {"a": "64Zet Cyg", "b": "58Nu  Cyg"},
+    {"a": "58Nu  Cyg", "b": "Deneb"},
+    {"a": "Deneb", "b": "45Ome1Cyg"},
+    {"a": "45Ome1Cyg", "b": "10Iot2Cyg"},
+    {"a": "10Iot2Cyg", "b": "1Kap Cyg"},
+    {"a": "10Iot2Cyg", "b": "18Del Cyg"},
+    {"a": "18Del Cyg", "b": "37Gam Cyg"}
+  ]},
+  {"name": "Delphinus", "code": "Del", "ra": "20.6667", "dec": "12", "stars": [
+    {"a": "2Eps Del", "b": "6Bet Del"},
+    {"a": "6Bet Del", "b": "9Alp Del"},
+    {"a": "9Alp Del", "b": "12Gam2Del"},
+    {"a": "12Gam2Del", "b": "11Del Del"},
+    {"a": "11Del Del", "b": "6Bet Del"}
+  ]},
+  {"name": "Dorado", "code": "Dor", "ra": "5", "dec": "-60", "stars": [
+    {"a": "Del Dor", "b": "The Dor"},
+    {"a": "The Dor", "b": "Bet Dor"},
+    {"a": "Bet Dor", "b": "Del Dor"},
+    {"a": "Bet Dor", "b": "Alp Dor"},
+    {"a": "Bet Dor", "b": "Zet Dor"},
+    {"a": "Zet Dor", "b": "Alp Dor"},
+    {"a": "Alp Dor", "b": "Gam Dor"}
+  ]},
+  {"name": "Draco", "code": "Dra", "ra": "17", "dec": "60", "stars": [
+    {"a": "1Lam Dra", "b": "4    Dra"},
+  	{"a": "4    Dra", "b": "11Alp Dra"},
+  	{"a": "11Alp Dra", "b": "12Iot Dra"},
+  	{"a": "12Iot Dra", "b": "13The Dra"},
+  	{"a": "13The Dra", "b": "14Eta Dra"},
+  	{"a": "14Eta Dra", "b": "22Zet Dra"},
+  	{"a": "22Zet Dra", "b": "43Phi Dra"},
+  	{"a": "44Chi Dra", "b": "43Phi Dra"},
+  	{"a": "43Phi Dra", "b": "57Del Dra"},
+  	{"a": "57Del Dra", "b": "32Xi  Dra"},
+  	{"a": "57Del Dra", "b": "63Eps Dra"},
+  	{"a": "32Xi  Dra", "b": "Etamin"},
+  	{"a": "Etamin", "b": "23Bet Dra"},
+  	{"a": "23Bet Dra", "b": "24Nu 1Dra"},
+  	{"a": "24Nu 1Dra", "b": "32Xi  Dra"}
+  ]},
+  {"name": "Equules", "code": "Equ", "ra": "21.1667", "dec": "6", "stars": [
+    {"a": "8Alp Equ", "b": "7Del Equ"},
+    {"a": "7Del Equ", "b": "5Gam Equ"}
+  ]},
+  {"name": "Eridanus", "code": "Eri", "ra": "3.8333", "dec": "-30", "stars": [
+    {"a": "Achernar", "b": "Chi Eri"},
+    {"a": "Chi Eri", "b": "Kap Eri"},
+    {"a": "Kap Eri", "b": "Iot Eri"},
+    {"a": "Iot Eri", "b": "The1Eri"},
+    {"a": "The1Eri", "b": "41Ups4Eri"},
+	{"a": "41Ups4Eri", "b": "43    Eri"},
+    {"a": "43    Eri", "b": "52Ups2Eri"},
+    {"a": "52Ups2Eri", "b": "50Ups1Eri"},
+    {"a": "50Ups1Eri", "b": "36Tau9Eri"},
+    {"a": "36Tau9Eri", "b": "33Tau8Eri"},
+    {"a": "33Tau8Eri", "b": "27Tau6Eri"},
+    {"a": "27Tau6Eri", "b": "19Tau5Eri"},
+    {"a": "19Tau5Eri", "b": "16Tau4Eri"},
+    {"a": "16Tau4Eri", "b": "11Tau3Eri"},
+    {"a": "11Tau3Eri", "b": "2Tau2Eri"},
+    {"a": "2Tau2Eri", "b": "1Tau1Eri"},
+    {"a": "1Tau1Eri", "b": "3Eta Eri"},
+    {"a": "3Eta Eri", "b": "18Eps Eri"},
+    {"a": "18Eps Eri", "b": "23Del Eri"},
+    {"a": "23Del Eri", "b": "26Pi  Eri"},
+    {"a": "26Pi  Eri", "b": "34Gam Eri"},
+    {"a": "34Gam Eri", "b": "40Omi2Eri"},
+    {"a": "40Omi2Eri", "b": "48Nu  Eri"},
+    {"a": "48Nu  Eri", "b": "57Mu  Eri"},
+    {"a": "57Mu  Eri", "b": "67Bet Eri"}
+  ]},
+  {"name": "Fornax", "code": "For", "ra": "2.5", "dec": "-33", "stars": [
+    {"a": "Alp For", "b": "Bet For"},
+    {"a": "Bet For", "b": "Nu  For"}
+  ]},
+  {"name": "Gemini", "code": "Gem", "ra": "7", "dec": "22", "stars": [
+    {"a": "Castor", "b": "46Tau Gem"},
+    {"a": "Pollux", "b": "69Ups Gem"},
+    {"a": "46Tau Gem", "b": "34The Gem"},
+    {"a": "46Tau Gem", "b": "27Eps Gem"},
+    {"a": "69Ups Gem", "b": "60Iot Gem"},
+    {"a": "46Tau Gem", "b": "60Iot Gem"},
+    {"a": "69Ups Gem", "b": "77Kap Gem"},
+    {"a": "69Ups Gem", "b": "55Del Gem"},
+    {"a": "55Del Gem", "b": "54Lam Gem"},
+    {"a": "54Lam Gem", "b": "38    Gem"},
+    {"a": "55Del Gem", "b": "43Zet Gem"},
+    {"a": "43Zet Gem", "b": "Alhena"},
+    {"a": "27Eps Gem", "b": "13Mu  Gem"},
+    {"a": "27Eps Gem", "b": "18Nu  Gem"}
+  ]},
+  {"name": "Grus", "code": "Gru", "ra": "22.333", "dec": "-47", "stars": [
+    {"a": "Gam Gru", "b": "Lam Gru"},
+    {"a": "Lam Gru", "b": "Mu 1Gru"},
+    {"a": "Mu 1Gru", "b": "Del1Gru"},
+    {"a": "Del1Gru", "b": "Alnair"},
+    {"a": "Alnair", "b": "Bet Gru"},
+    {"a": "Bet Gru", "b": "Del1Gru"},
+    {"a": "Bet Gru", "b": "Eps Gru"},
+    {"a": "Eps Gru", "b": "Eta Gru"}
+  ]},
+  {"name": "Hercules", "code": "Her", "ra": "17.1667", "dec": "27", "stars": [
+    {"a": "Rasalgethi", "b": "27Bet Her"},
+    {"a": "27Bet Her", "b": "40Zet Her"},
+    {"a": "40Zet Her", "b": "58Eps Her"},
+    {"a": "58Eps Her", "b": "65Del Her"},
+    {"a": "65Del Her", "b": "Rasalgethi"},
+    {"a": "27Bet Her", "b": "20Gam Her"},
+    {"a": "20Gam Her", "b": "24Ome Her"},
+    {"a": "24Ome Her", "b": "29    Her"},
+    {"a": "65Del Her", "b": "76Lam Her"},
+    {"a": "76Lam Her", "b": "86Mu  Her"},
+    {"a": "86Mu  Her", "b": "92Xi  Her"},
+    {"a": "92Xi  Her", "b": "103Omi Her"},
+    {"a": "58Eps Her", "b": "67Pi  Her"},
+    {"a": "67Pi  Her", "b": "44Eta Her"},
+    {"a": "44Eta Her", "b": "40Zet Her"},
+    {"a": "67Pi  Her", "b": "75Rho Her"},
+    {"a": "75Rho Her", "b": "91The Her"},
+    {"a": "91The Her", "b": "85Iot Her"},
+    {"a": "44Eta Her", "b": "35Sig Her"},
+    {"a": "35Sig Her", "b": "22Tau Her"},
+    {"a": "22Tau Her", "b": "11Phi Her"},
+    {"a": "11Phi Her", "b": "1Chi Her"}
+  ]},
+  {"name": "Horologium", "code": "Hor", "ra": "3.333", "dec": "-52", "stars": [
+    {"a": "Alp Hor", "b": "Iot Hor"},
+    {"a": "Iot Hor", "b": "Eta Hor"},
+    {"a": "Eta Hor", "b": "Zet Hor"},
+    {"a": "Zet Hor", "b": "Mu  Hor"},
+    {"a": "Mu  Hor", "b": "Bet Hor"}
+  ]},
+  {"name": "Hydra ", "code": "Hyd", "ra": "10.5", "dec": "-10", "stars": [
+    {"a": "4Del Hya", "b": "5Sig Hya"},
+    {"a": "5Sig Hya", "b": "7Eta Hya"},
+    {"a": "7Eta Hya", "b": "13Rho Hya"},
+    {"a": "13Rho Hya", "b": "11Eps Hya"},
+    {"a": "11Eps Hya", "b": "4Del Hya"},
+    {"a": "13Rho Hya", "b": "16Zet Hya"},
+    {"a": "16Zet Hya", "b": "18Ome Hya"},
+    {"a": "18Ome Hya", "b": "35Iot Hya"},
+    {"a": "35Iot Hya", "b": "Alphard"},
+    {"a": "Alphard", "b": "39Ups1Hya"},
+    {"a": "39Ups1Hya", "b": "41Lam Hya"},
+    {"a": "41Lam Hya", "b": "42Mu  Hya"},
+    {"a": "42Mu  Hya", "b": "Phi3Hya"},
+    {"a": "Phi3Hya", "b": "Nu  Hya"},
+    {"a": "Nu  Hya", "b": "7Alp Crt"},
+    {"a": "7Alp Crt", "b": "11Bet Crt"},
+    {"a": "11Bet Crt", "b": "Xi  Hya"},
+    {"a": "Xi  Hya", "b": "Bet Hya"},
+    {"a": "Bet Hya", "b": "46Gam Hya"},
+    {"a": "46Gam Hya", "b": "49Pi  Hya"},
+    {"a": "49Pi  Hya", "b": "51    Hya"}
+  ]},
+  {"name": "Hydrus", "code": "Hyi", "ra": "2.6667", "dec": "-70", "stars": [
+    {"a": "Alp Hyi", "b": "Bet Hyi"},
+    {"a": "Bet Hyi", "b": "Gam Hyi"},
+    {"a": "Gam Hyi", "b": "Alp Hyi"}
+  ]},
+  {"name": "Indus", "code": "Ind", "ra": "21.333", "dec": "-58", "stars": [
+    {"a": "Alp Ind", "b": "The Ind"},
+    {"a": "The Ind", "b": "Del Ind"},
+    {"a": "Del Ind", "b": "Bet Ind"},
+    {"a": "Bet Ind", "b": "Eta Ind"},
+    {"a": "Eta Ind", "b": "Alp Ind"}
+  ]},
+  {"name": "Lacerta", "code": "Lac", "ra": "22.416667", "dec": "43", "stars": [
+    {"a": "7Alp Lac", "b": "3Bet Lac"},
+    {"a": "3Bet Lac", "b": "4    Lac"},
+    {"a": "4    Lac", "b": "5    Lac"},
+    {"a": "5    Lac", "b": "7Alp Lac"},
+    {"a": "5    Lac", "b": "2    Lac"},
+    {"a": "2    Lac", "b": "6    Lac"},
+    {"a": "6    Lac", "b": "11    Lac"},
+    {"a": "11    Lac", "b": "5    Lac"},
+    {"a": "6    Lac", "b": "1    Lac"}
+  ]},
+  {"name": "Leo", "code": "Leo", "ra": "10.5", "dec": "15", "stars": [
+    {"a": "Regulus", "b": "30Eta Leo"},
+    {"a": "30Eta Leo", "b": "Algieba"},
+    {"a": "30Eta Leo", "b": "17Eps Leo"},
+    {"a": "30Eta Leo", "b": "70The Leo"},
+    {"a": "17Eps Leo", "b": "24Mu  Leo"},
+    {"a": "24Mu  Leo", "b": "36Zet Leo"},
+    {"a": "36Zet Leo", "b": "Algieba"},
+    {"a": "24Mu  Leo", "b": "1Kap Leo"},
+    {"a": "1Kap Leo", "b": "4Lam Leo"},
+    {"a": "4Lam Leo", "b": "17Eps Leo"},
+    {"a": "Algieba", "b": "68Del Leo"},
+    {"a": "68Del Leo", "b": "70The Leo"},
+    {"a": "68Del Leo", "b": "Denebola"},
+    {"a": "70The Leo", "b": "Denebola"},
+    {"a": "70The Leo", "b": "78Iot Leo"},
+    {"a": "78Iot Leo", "b": "77Sig Leo"}
+   ]},
+  {"name": "Leo Minor", "code": "LMi", "ra": "10.333", "dec": "33", "stars": [
+    {"a": "10    LMi", "b": "21    LMi"},
+    {"a": "21    LMi", "b": "30    LMi"},
+    {"a": "30    LMi", "b": "46    LMi"},
+    {"a": "46    LMi", "b": "31Bet LMi"},
+    {"a": "31Bet LMi", "b": "21    LMi"}
+  ]},
+  {"name": "Lepus", "code": "Lep", "ra": "5.416667", "dec": "-20", "stars": [
+    {"a": "Arneb", "b": "14Zet Lep"},
+    {"a": "14Zet Lep", "b": "16Eta Lep"},
+    {"a": "16Eta Lep", "b": "18The Lep"},
+    {"a": "18The Lep", "b": "15Del Lep"},
+    {"a": "15Del Lep", "b": "13Gam Lep"},
+    {"a": "13Gam Lep", "b": "Nihal"},
+    {"a": "Nihal", "b": "Arneb"},
+    {"a": "Nihal", "b": "2Eps Lep"},
+    {"a": "2Eps Lep", "b": "5Mu  Lep"},
+    {"a": "5Mu  Lep", "b": "Arneb"},
+    {"a": "5Mu  Lep", "b": "4Kap Lep"},
+    {"a": "5Mu  Lep", "b": "6Lam Lep"}
+  ]},
+  {"name": "Libra ", "code": "Lib", "ra": "15.16667", "dec": "-14", "stars": [
+    {"a": "27Bet Lib", "b": "9Alp2Lib"},
+    {"a": "9Alp2Lib", "b": "20Sig Lib"},
+    {"a": "9Alp2Lib", "b": "38Gam Lib"},
+    {"a": "38Gam Lib", "b": "27Bet Lib"},
+    {"a": "38Gam Lib", "b": "39Ups Lib"},
+    {"a": "39Ups Lib", "b": "40Tau Lib"}
+  ]},
+  {"name": "Lupus", "code": "Lup", "ra": "15", "dec": "-40", "stars": [
+    {"a": "Alp Lup", "b": "Zet Lup"},
+    {"a": "Zet Lup", "b": "Mu  Lup"},
+    {"a": "Zet Lup", "b": "Eta Lup"},
+    {"a": "Mu  Lup", "b": "Eps Lup"},
+    {"a": "Eps Lup", "b": "Gam Lup"},
+    {"a": "Gam Lup", "b": "Del Lup"},
+    {"a": "Del Lup", "b": "Bet Lup"},
+    {"a": "Gam Lup", "b": "Eta Lup"},
+    {"a": "Eta Lup", "b": "5Chi Lup"},
+    {"a": "5Chi Lup", "b": "Phi1Lup"},
+    {"a": "Phi1Lup", "b": "Eta Lup"}
+  ]},
+  {"name": "Lynx", "code": "Lyn", "ra": "7.8333", "dec": "45", "stars": [
+    {"a": "40Alp Lyn", "b": "38    Lyn"},
+    {"a": "38    Lyn", "b": "36    Lyn"},
+    {"a": "36    Lyn", "b": "31    Lyn"},
+    {"a": "31    Lyn", "b": "27    Lyn"},
+    {"a": "27    Lyn", "b": "24    Lyn"},
+    {"a": "24    Lyn", "b": "15    Lyn"}
+  ]},
+  {"name": "Lyra", "code": "Lyr", "ra": "18.75", "dec": "36", "stars": [
+    {"a": "6Zet1Lyr", "b": "5Eps2Lyr"},
+    {"a": "5Eps2Lyr", "b": "Vega"},
+    {"a": "Vega", "b": "6Zet1Lyr"},
+    {"a": "6Zet1Lyr", "b": "12Del2Lyr"},
+    {"a": "12Del2Lyr", "b": "14Gam Lyr"},
+    {"a": "14Gam Lyr", "b": "10Bet Lyr"},
+    {"a": "10Bet Lyr", "b": "6Zet1Lyr"}
+  ]},
+  {"name": "Mensa", "code": "Men", "ra": "5.6667", "dec": "-77", "stars": [
+    {"a": "Alp Men", "b": "Gam Men"},
+    {"a": "Gam Men", "b": "Eta Men"},
+    {"a": "Eta Men", "b": "Bet Men"}
+  ]},
+  {"name": "Microscopium", "code": "Mic", "ra": "20.8333", "dec": "-37", "stars": [
+    {"a": "Iot Mic", "b": "Alp Mic"},
+    {"a": "Alp Mic", "b": "Gam Mic"},
+    {"a": "Gam Mic", "b": "Eps Mic"},
+    {"a": "Eps Mic", "b": "Xi  Gru"},
+    {"a": "Xi  Gru", "b": "Iot Mic"}
+  ]},
+  {"name": "Monoceros ", "code": "Mon", "ra": "7", "dec": "-3", "stars": [
+    {"a": "26Alp Mon", "b": "29Zet Mon"},
+    {"a": "22Del Mon", "b": "29Zet Mon"},
+    {"a": "22Del Mon", "b": "11Bet Mon"},
+    {"a": "11Bet Mon", "b": "5Gam Mon"}
+  ]},
+  {"name": "Musca", "code": "Mus", "ra": "12.5", "dec": "-70", "stars": [
+    {"a": "Lam Mus", "b": "Eps Mus"},
+    {"a": "Eps Mus", "b": "Alp Mus"},
+    {"a": "Alp Mus", "b": "Bet Mus"},
+    {"a": "Bet Mus", "b": "Del Mus"},
+    {"a": "Del Mus", "b": "Gam Mus"},
+    {"a": "Gam Mus", "b": "Alp Mus"}
+  ]},
+  {"name": "Norma", "code": "Nor", "ra": "16", "dec": "-50", "stars": [
+    {"a": "Eps Nor", "b": "Gam2Nor"},
+    {"a": "Gam2Nor", "b": "Eta Nor"},
+    {"a": "Eta Nor", "b": "Del Nor"},
+    {"a": "Del Nor", "b": "Eps Nor"}
+  ]},
+  {"name": "Octans", "code": "Oct", "ra": "21", "dec": "-87", "stars": [
+    {"a": "Bet Oct", "b": "Del Oct"},
+    {"a": "Del Oct", "b": "Nu  Oct"},
+    {"a": "Nu  Oct", "b": "Bet Oct"}
+  ]},
+  {"name": "Ophiuchus", "code": "Oph", "ra": "17.1667", "dec": "-5", "stars": [
+    {"a": "Rasalhague", "b": "60Bet Oph"},
+    {"a": "60Bet Oph", "b": "62Gam Oph"},
+    {"a": "62Gam Oph", "b": "64Nu  Oph"},
+    {"a": "60Bet Oph", "b": "35Eta Oph"},
+    {"a": "35Eta Oph", "b": "42The Oph"},
+    {"a": "42The Oph", "b": "45    Oph"},
+    {"a": "35Eta Oph", "b": "13Zet Oph"},
+    {"a": "13Zet Oph", "b": "8Phi Oph"},
+    {"a": "13Zet Oph", "b": "3Ups Oph"},
+    {"a": "3Ups Oph", "b": "2Eps Oph"},
+    {"a": "2Eps Oph", "b": "1Del Oph"},
+    {"a": "1Del Oph", "b": "27Kap Oph"},
+    {"a": "27Kap Oph", "b": "13Zet Oph"},
+    {"a": "27Kap Oph", "b": "Rasalhague"},
+    {"a": "8Phi Oph", "b": "4Psi Oph"}
+  ]},
+  {"name": "Orion", "code": "Ori", "ra": "5.333", "dec": "3", "stars": [
+    {"a": "Bellatrix", "b": "34Del Ori"},
+    {"a": "Betelgeuse", "b": "48Sig Ori"},
+    {"a": "Rigel", "b": "34Del Ori"},
+    {"a": "Saiph", "b": "48Sig Ori"},
+    {"a": "34Del Ori", "b": "Alnilam"},
+    {"a": "48Sig Ori", "b": "Alnilam"},
+    {"a": "Bellatrix", "b": "37Phi1Ori"},
+    {"a": "Betelgeuse", "b": "37Phi1Ori"},
+    {"a": "Bellatrix", "b": "Betelgeuse"}
+  ]},
+  {"name": "Pavo", "code": "Pav", "ra": "19.16667", "dec": "-65", "stars": [
+    {"a": "Del Pav", "b": "Bet Pav"},
+    {"a": "Bet Pav", "b": "Gam Pav"},
+    {"a": "Gam Pav", "b": "Alp Pav"},
+    {"a": "Alp Pav", "b": "Del Pav"},
+    {"a": "Del Pav", "b": "Mu 1Pav"},
+    {"a": "Mu 1Pav", "b": "Zet Pav"},
+    {"a": "Mu 1Pav", "b": "Eps Pav"},
+    {"a": "Del Pav", "b": "Lam Pav"},
+    {"a": "Lam Pav", "b": "Xi  Pav"},
+    {"a": "Xi  Pav", "b": "Pi  Pav"},
+    {"a": "Pi  Pav", "b": "Eta Pav"},
+    {"a": "Pi  Pav", "b": "Kap Pav"},
+    {"a": "Kap Pav", "b": "Del Pav"}
+  ]},
+  {"name": "Pegasus", "code": "Peg", "ra": "22.5", "dec": "17", "stars": [
+    {"a": "Algenib", "b": "Alpheratz"},
+    {"a": "Alpheratz", "b": "Scheat"},
+    {"a": "Scheat", "b": "Markab"},
+    {"a": "Markab", "b": "Algenib"},
+    {"a": "Scheat", "b": "44Eta Peg"},
+    {"a": "44Eta Peg", "b": "29Pi 2Peg"},
+    {"a": "Scheat", "b": "47Lam Peg"},
+    {"a": "47Lam Peg", "b": "24Iot Peg"},
+    {"a": "24Iot Peg", "b": "10Kap Peg"},
+    {"a": "Markab", "b": "42Zet Peg"},
+    {"a": "42Zet Peg", "b": "26The Peg"},
+    {"a": "26The Peg", "b": "Enif"}
+ ]},
+  {"name": "Perseus  ", "code": "Per", "ra": "3.333", "dec": "42", "stars": [
+    {"a": "Mirphak", "b": "23Gam Per"},
+    {"a": "23Gam Per", "b": "15Eta Per"},
+    {"a": "15Eta Per", "b": "18Tau Per"},
+    {"a": "18Tau Per", "b": "23Gam Per"},
+    {"a": "18Tau Per", "b": "Iot Per"},
+    {"a": "Iot Per", "b": "Mirphak"},
+    {"a": "Mirphak", "b": "39Del Per"},
+    {"a": "39Del Per", "b": "48    Per"},
+    {"a": "48    Per", "b": "51Mu  Per"},
+    {"a": "51Mu  Per", "b": "47Lam Per"},
+    {"a": "47Lam Per", "b": "43    Per"},
+    {"a": "39Del Per", "b": "45Eps Per"},
+    {"a": "45Eps Per", "b": "46Xi  Per"},
+    {"a": "46Xi  Per", "b": "44Zet Per"},
+    {"a": "45Eps Per", "b": "Algol"},
+    {"a": "44Zet Per", "b": "38Omi Per"},
+    {"a": "Algol", "b": "25Rho Per"},
+    {"a": "Algol", "b": "27Kap Per"},
+    {"a": "27Kap Per", "b": "Iot Per"},
+    {"a": "Iot Per", "b": "13The Per"}
+  ]},
+  {"name": "Phoenix", "code": "Phe", "ra": "1", "dec": "-48", "stars": [
+    {"a": "Bet Phe", "b": "Ankaa"},
+    {"a": "Ankaa", "b": "Eps Phe"},
+    {"a": "Eps Phe", "b": "Bet Phe"},
+    {"a": "Bet Phe", "b": "Gam Phe"},
+    {"a": "Gam Phe", "b": "Del Phe"},
+    {"a": "Del Phe", "b": "Zet Phe"},
+    {"a": "Zet Phe", "b": "Bet Phe"}
+  ]},
+  {"name": "Pictor", "code": "Pic", "ra": "5.5", "dec": "-52", "stars": [
+    {"a": "Bet Pic", "b": "Gam Pic"},
+    {"a": "Gam Pic", "b": "Alp Pic"}
+  ]},
+  {"name": "Pisces", "code": "Psc", "ra": "0.333", "dec": "10", "stars": [
+    {"a": "17Iot Psc", "b": "10The Psc"},
+    {"a": "10The Psc", "b": "6Gam Psc"},
+    {"a": "6Gam Psc", "b": "8Kap Psc"},
+    {"a": "8Kap Psc", "b": "18Lam Psc"},
+    {"a": "18Lam Psc", "b": "17Iot Psc"},
+    {"a": "17Iot Psc", "b": "28Ome Psc"},
+    {"a": "28Ome Psc", "b": "63Del Psc"},
+    {"a": "63Del Psc", "b": "71Eps Psc"},
+    {"a": "71Eps Psc", "b": "86Zet Psc"},
+    {"a": "86Zet Psc", "b": "98Mu  Psc"},
+    {"a": "98Mu  Psc", "b": "106Nu  Psc"},
+    {"a": "106Nu  Psc", "b": "113Alp Psc"},
+    {"a": "113Alp Psc", "b": "110Omi Psc"},
+    {"a": "110Omi Psc", "b": "99Eta Psc"},
+    {"a": "99Eta Psc", "b": "85Phi Psc"},
+    {"a": "85Phi Psc", "b": "90Ups Psc"},
+    {"a": "90Ups Psc", "b": "83Tau Psc"},
+    {"a": "83Tau Psc", "b": "85Phi Psc"}
+  ]},
+  {"name": "Piscis Austrinus", "code": "PsA", "ra": "22.16667", "dec": "-32", "stars": [
+    {"a": "14Mu  PsA", "b": "9Iot PsA"},
+    {"a": "9Iot PsA", "b": "10The PsA"},
+    {"a": "10The PsA", "b": "14Mu  PsA"},
+    {"a": "14Mu  PsA", "b": "17Bet PsA"},
+    {"a": "17Bet PsA", "b": "22Gam PsA"},
+    {"a": "22Gam PsA", "b": "23Del PsA"},
+    {"a": "23Del PsA", "b": "Fomalhaut"},
+    {"a": "Fomalhaut", "b": "18Eps PsA"},
+    {"a": "18Eps PsA", "b": "14Mu  PsA"}
+  ]},
+  {"name": "Puppis", "code": "Pup", "ra": "7.6667", "dec": "-32", "stars": [
+    {"a": "Canopus", "b": "Nu  Pup"},
+    {"a": "Nu  Pup", "b": "Pi  Pup"},
+    {"a": "Pi  Pup", "b": "7Xi  Pup"},
+    {"a": "7Xi  Pup", "b": "15Rho Pup"},
+    {"a": "15Rho Pup", "b": "Zet Pup"},
+    {"a": "Zet Pup", "b": "Gam2Vel"}
+  ]},
+  {"name": "Pyxis", "code": "Prx", "ra": "8.8333", "dec": "-28", "stars": [
+    {"a": "Gam Pyx", "b": "Alp Pyx"},
+    {"a": "Alp Pyx", "b": "Bet Pyx"},
+    {"a": "Bet Pyx", "b": "Zet Pup"}
+  ]},
+  {"name": "Reticulum", "code": "Ret", "ra": "3.8333", "dec": "-63", "stars": [
+    {"a": "Alp Ret", "b": "Bet Ret"},
+    {"a": "Bet Ret", "b": "Del Ret"},
+    {"a": "Del Ret", "b": "Eps Ret"},
+    {"a": "Eps Ret", "b": "Alp Ret"}
+  ]},
+  {"name": "Sagitta", "code": "Sge", "ra": "19.6667", "dec": "18", "stars": [
+    {"a": "12Gam Sge", "b": "7Del Sge"},
+    {"a": "7Del Sge", "b": "6Bet Sge"},
+    {"a": "7Del Sge", "b": "5Alp Sge"}
+  ]},
+  {"name": "Sagittarius", "code": "Sgr", "ra": "19", "dec": "-25", "stars": [
+    {"a": "Kaus Australis", "b": "10Gam2Sgr"},
+    {"a": "10Gam2Sgr", "b": "19Del Sgr"},
+    {"a": "19Del Sgr", "b": "Kaus Australis"},
+    {"a": "19Del Sgr", "b": "22Lam Sgr"},
+    {"a": "22Lam Sgr", "b": "13Mu  Sgr"},
+    {"a": "22Lam Sgr", "b": "27Phi Sgr"},
+    {"a": "27Phi Sgr", "b": "19Del Sgr"},
+    {"a": "27Phi Sgr", "b": "Nunki"},
+    {"a": "Nunki", "b": "40Tau Sgr"},
+    {"a": "40Tau Sgr", "b": "38Zet Sgr"},
+    {"a": "38Zet Sgr", "b": "27Phi Sgr"},
+    {"a": "38Zet Sgr", "b": "Kaus Australis"}
+  ]},
+  {"name": "Scorpio", "code": "Sco", "ra": "16.5", "dec": "-26", "stars": [
+    {"a": "8Bet2Sco", "b": "7Del Sco"},
+    {"a": "7Del Sco", "b": "6Pi  Sco"},
+    {"a": "7Del Sco", "b": "20Sig Sco"},
+    {"a": "20Sig Sco", "b": "Antares"},
+    {"a": "Antares", "b": "23Tau Sco"},
+    {"a": "23Tau Sco", "b": "26Eps Sco"},
+    {"a": "26Eps Sco", "b": "Mu 2Sco"},
+    {"a": "Mu 2Sco", "b": "Zet1Sco"},
+    {"a": "Zet1Sco", "b": "Eta Sco"},
+    {"a": "Eta Sco", "b": "The Sco"},
+    {"a": "The Sco", "b": "Iot1Sco"},
+    {"a": "Iot1Sco", "b": "Kap Sco"},
+    {"a": "Kap Sco", "b": "34Ups Sco"},
+    {"a": "34Ups Sco", "b": "Shaula"}
+  ]},
+  {"name": "Sculptor", "code": "Scl", "ra": ".05", "dec": "-35", "stars": [
+    {"a": "Alp Scl", "b": "Iot Scl"},
+    {"a": "Iot Scl", "b": "Del Scl"},
+    {"a": "Del Scl", "b": "Gam Scl"},
+    {"a": "Gam Scl", "b": "Bet Scl"}
+  ]},
+  {"name": "Scutum", "code": "Sct", "ra": "18.58333", "dec": "-10", "stars": [
+    {"a": "Bet Sct", "b": "Alp Sct"},
+    {"a": "Alp Sct", "b": "Gam Sct"},
+    {"a": "Gam Sct", "b": "Del Sct"},
+    {"a": "Dec Sct", "b": "Eps Sct"},
+    {"a": "Eps Sct", "b": "Bet Sct"}
+  ]},
+  {"name": "Serpens", "code": "Ser", "ra": "15.58333", "dec": "10", "stars": [
+    {"a": "28Bet Ser", "b": "41Gam Ser"},
+    {"a": "41Gam Ser", "b": "35Kap Ser"},
+    {"a": "35Kap Ser", "b": "21Iot Ser"},
+    {"a": "21Iot Ser", "b": "28Bet Ser"},
+    {"a": "28Bet Ser", "b": "13Del Ser"},
+    {"a": "13Del Ser", "b": "Unukalhai"},
+    {"a": "Unukalhai", "b": "37Eps Ser"},
+    {"a": "37Eps Ser", "b": "32Mu  Ser"}
+  ]},
+  {"name": "Sextans", "code": "Sex", "ra": "10.1667", "dec": "-1", "stars": [
+    {"a": "29Del Sex", "b": "30Bet Sex"},
+    {"a": "30Bet Sex", "b": "15Alp Sex"},
+    {"a": "15Alp Sex", "b": "8Gam Sex"}
+  ]},
+  {"name": "Taurus", "code": "Tau", "ra": "4.5", "dec": "18", "stars": [
+    {"a": "Alnath", "b": "74Eps Tau"},
+    {"a": "74Eps Tau", "b": "64Del2Tau"},
+    {"a": "64Del2Tau", "b": "54Gam Tau"},
+    {"a": "54Gam Tau", "b": "75    Tau"},
+    {"a": "75    Tau", "b": "Aldebaran"},
+    {"a": "Aldebaran", "b": "123Zet Tau"},
+    {"a": "54Gam Tau", "b": "35Lam Tau"},
+    {"a": "35Lam Tau", "b": "2Xi  Tau"}
+  ]},
+  {"name": "Telescopium", "code": "Tel", "ra": "19", "dec": "-52", "stars": [
+    {"a": "Zet Tel", "b": "Alp Tel"}
+  ]},
+  {"name": "Triangulum", "code": "Tri", "ra": "2", "dec": "32", "stars": [
+    {"a": "4Bet Tri", "b": "9Gam Tri"},
+    {"a": "9Gam Tri", "b": "2Alp Tri"},
+    {"a": "2Alp Tri", "b": "4Bet Tri"}
+  ]},
+  {"name": "Triangulum Australe", "code": "TrA", "ra": "15.6667", "dec": "-65", "stars": [
+    {"a": "Bet TrA", "b": "Gam TrA"},
+    {"a": "Gam TrA", "b": "Alp TrA"},
+    {"a": "Alp TrA", "b": "Bet TrA"}
+  ]},
+  {"name": "Tucana", "code": "Tuc", "ra": "23.75", "dec": "-68", "stars": [
+    {"a": "Alp Tuc", "b": "Gam Tuc"},
+    {"a": "Gam Tuc", "b": "Bet1Tuc"},
+    {"a": "Bet1Tuc", "b": "Zet Tuc"},
+    {"a": "Zet Tuc", "b": "Eps Tuc"},
+    {"a": "Eps Tuc", "b": "Del Tuc"},
+    {"a": "Del Tuc", "b": "Alp Tuc"}
+  ]},
+  {"name": "Ursa Major", "code": "UMa", "ra": "11", "dec": "58", "stars": [
+    {"a": "1", "b": "2"}, 
+    {"a": "Alkaid", "b": "Mizar"},
+    {"a": "Mizar", "b": "Alioth"},
+    {"a": "Alioth", "b": "69Del UMa"},
+    {"a": "69Del UMa", "b": "Phad"},
+    {"a": "Phad", "b": "Merak"},
+    {"a": "Merak", "b": "Dubhe"}, 
+    {"a": "Dubhe", "b": "69Del UMa"}, 
+    {"a": "Phad", "b": "Xi UMa"},
+    {"a": "Merak", "b": "29Ups UMa"},
+    {"a": "Dubhe", "b": "23    UMa"},
+    {"a": "23    UMa", "b": "1Omi UMa"},
+    {"a": "29Ups UMa", "b": "1Omi UMa"},
+    {"a": "23    UMa", "b": "29Ups UMa"},
+    {"a": "Phad", "b": "63Chi UMa"},
+    {"a": "63Chi UMa", "b": "52Psi UMa"},
+    {"a": "52Psi UMa", "b": "34Mu  UMa"},
+    {"a": "34Mu  UMa", "b": "33Lam UMa"},
+    {"a": "63Chi UMa", "b": "54Nu  UMa"},
+    {"a": "54Nu  UMa", "b": "53Xi  UMa"},
+    {"a": "29Ups UMa", "b": "25The UMa"},
+    {"a": "25The UMa", "b": "12Kap UMa"},
+    {"a": "12Kap UMa", "b": "9Iot UMa"},
+  ]},
+  {"name": "Ursa Minor", "code": "UMi", "ra": "15.6667", "dec": "78", "stars": [
+    {"a": "Kochab", "b": "13Gam UMi"},
+    {"a": "13Gam UMi", "b": "21Eta UMi"},
+    {"a": "21Eta UMi", "b": "16Zet UMi"},
+    {"a": "Kochab", "b": "16Zet UMi"},
+    {"a": "16Zet UMi", "b": "22Eps UMi"},
+    {"a": "22Eps UMi", "b": "23Del UMi"},
+    {"a": "23Del UMi", "b": "Polaris"}
+  ]},
+  {"name": "Vela", "code": "Vel", "ra": "9.5", "dec": "-45", "stars": [
+    {"a": "Mu  Vel", "b": "Phi Vel"},
+    {"a": "Phi Vel", "b": "Kap Vel"},
+    {"a": "Kap Vel", "b": "Del Vel"},
+    {"a": "Del Vel", "b": "Gam2Vel"},
+    {"a": "Gam2Vel", "b": "Lam Vel"},
+    {"a": "Lam Vel", "b": "Psi Vel"},
+    {"a": "Psi Vel", "b": "Mu  Vel"}
+  ]},
+  {"name": "Virgo  ", "code": "Vir", "ra": "13.333", "dec": "-2", "stars": [
+    {"a": "Spica", "b": "51The Vir"},
+    {"a": "51The Vir", "b": "29Gam Vir"},
+    {"a": "29Gam Vir", "b": "15Eta Vir"},
+    {"a": "29Gam Vir", "b": "43Del Vir"},
+    {"a": "29Gam Vir", "b": "79Zet Vir"},
+    {"a": "15Eta Vir", "b": "5Bet Vir"},
+    {"a": "5Bet Vir", "b": "3Nu  Vir"},
+    {"a": "3Nu  Vir", "b": "9Omi Vir"},
+    {"a": "9Omi Vir", "b": "15Eta Vir"},
+    {"a": "43Del Vir", "b": "Vindemiatrix"},
+    {"a": "79Zet Vir", "b": "93Tau Vir"},
+    {"a": "93Tau Vir", "b": "109    Vir"},
+    {"a": "79Zet Vir", "b": "99Iot Vir"},
+    {"a": "99Iot Vir", "b": "107Mu  Vir"}
+  ]},
+  {"name": "Volans", "code": "Vol", "ra": "7.6667", "dec": "-69", "stars": [
+    {"a": "Alp Vol", "b": "Bet Vol"},
+    {"a": "Bet Vol", "b": "Eps Vol"},
+    {"a": "Eps Vol", "b": "Del Vol"},
+    {"a": "Del Vol", "b": "Gam2Vol"},
+    {"a": "Gam2Vol", "b": "Eps Vol"},
+    {"a": "Eps Vol", "b": "Alp Vol"}
+  ]},
+  {"name": "Vulpecua", "code": "Vul", "ra": "19.86667", "dec": "25", "stars": [
+    {"a": "6Alp Vul", "b": "12    Vul"}
+  ]},
+];
